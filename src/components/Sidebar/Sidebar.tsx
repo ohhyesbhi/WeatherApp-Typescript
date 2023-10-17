@@ -1,7 +1,9 @@
 function Sidebar(){
     return (
         <>
-        side bar
+          <div className="basis-3/12 h-full flex flex-col items-center text-black rounded-tl-3xl rounded-bl-3xl" style={{background:"rgba(255,255,255,0.81)"}}>
+              Sidebar
+          </div>
         </>
     )
 }
