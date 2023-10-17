@@ -7,11 +7,9 @@ function Home(){
     return (
 
         <>
-        <div className="h-[100vh] px-8 py-8 " style={{backgroundImage:`linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)) ,url(${NightImage})`}}>
-              <div className="h-[90%]  flex flex-row justify-center items-center">
+        <div className="min-h-[100vh] flex flex-row justify-center items-stretch px-8 py-8 " style={{backgroundImage:`linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)) ,url(${NightImage})`}}>
                  <Sidebar/>
                  <Maindata/>
-              </div>
         </div>
 
         </>
