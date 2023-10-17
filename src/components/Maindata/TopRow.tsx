@@ -2,7 +2,7 @@
 
 function TopRow() {
   return (
-    <div className="flex justify-between items-center w-full px-4 mt-2">
+    <div className="flex justify-between items-center w-full px-8 mt-2">
       <div className="flex items-center justify-center font-semibold text-xl">
         {/* today or week */}
          <div className="mr-4 hover:text-[#0284c7] cursor-pointer">
