@@ -1,10 +1,26 @@
+import {useState} from "react"
+
 import {FaSearchLocation} from "react-icons/fa"
 import {BsFillDropletFill} from "react-icons/bs"
 import {AiFillCloud} from "react-icons/ai"
 
 import Cloudynight from "../../assets/CloudyNight.png"
+import {  useSelector } from "react-redux"
+import { fetchData } from "../../redux/slices/ForecastSlice"
+import { useAppDispatch } from "../../hooks/hooks"
+import { ReduxState } from "../../ReduxState"
 
 function Upperhalf() {
+  const [text,setText] = useState("");
+  const dispatch = useAppDispatch()
+
+  const currentData = useSelector((state:ReduxState)=>state.forecast.data.currentData)
+  console.log(currentData.temp_c,"okcurrent data")
+
+  function handleOnClick(){
+          dispatch(fetchData(text))
+  }
+
   return (
     <div className="h-[70%] w-full p-4">
      <div className="flex felx-row justify-center ">
@@ -13,9 +29,16 @@ function Upperhalf() {
         placeholder="Search..."
         className="px-2 py-2 rounded-tl-md w-[80%] rounded-bl-md bg-white text-black border-none"
         type="text"
+        value={text}
+        onChange={(e)=>{setText(e.target.value)
+          // handleOnClick()
+        }}
         />
-        <button className="basis-[15%] block flex flex-row justify-center items-center  rounded-tr-md rounded-br-md text-white text-lg bg-sky-600">
-            <FaSearchLocation />
+        <button 
+        className="basis-[15%] block flex flex-row justify-center items-center  rounded-tr-md rounded-br-md text-white text-lg bg-sky-600"
+         onClick={()=>handleOnClick()}
+         >
+            <FaSearchLocation  />
         </button>
      </div>
      
@@ -29,7 +52,7 @@ function Upperhalf() {
      <div>
         {/* temperature data */}
         <div className="font-medium text-6xl mt-4 text-black flex flex-row items-start justify-center">
-                 <div > 24.5</div>  
+                 <div ></div>  
                  <div className="text-5xl">°C</div>
         </div>
         <div className="text-black text-center font-normal text-md mt-1">

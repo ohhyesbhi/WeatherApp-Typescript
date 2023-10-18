@@ -1,14 +1,14 @@
 import { createSlice ,createAsyncThunk } from '@reduxjs/toolkit'
 import axiosInstance from "../../config/Axiosinstance"
 
-interface DayForecast{
+export interface DayForecast{
    date : string,
    avgtemp_c : number,
    avgtemp_f : number,
    conditional : string
  }
 
- interface DayForecast1{
+ export interface DayForecast1{
     date : string,
     day :{
     avgtemp_c : number,
@@ -19,7 +19,7 @@ interface DayForecast{
     }
   }
 
- interface currentDayForecast{
+ export interface currentDayForecast{
     uv : number,
     wind_kmph : number,
     humidity : number,
@@ -35,7 +35,7 @@ interface DayForecast{
 
  }
 
-interface ForecastData{
+export interface ForecastData{
    location:{
     localtime:string,
     country:string,
@@ -46,7 +46,7 @@ interface ForecastData{
    currentData : currentDayForecast
 }
 
-interface ForecastDataState{
+export interface ForecastDataState{
 status : "default"|"loading"|"success"|"failure",
 data : ForecastData 
 }
@@ -79,9 +79,9 @@ const initialState:ForecastDataState = {
 }
 
 
-export const fetchData  = createAsyncThunk('data/fetchdata',async()=>{
+export const fetchData  = createAsyncThunk('data/fetchdata',async(data:string)=>{
     try {
-      const response = await axiosInstance.get(`forecast.json?key=${import.meta.env.VITE_API_KEY}&days=7&aqi=yes&q=bengaluru`)  ;
+      const response = await axiosInstance.get(`forecast.json?key=${import.meta.env.VITE_API_KEY}&days=7&aqi=yes&q=${data?data:"bengaluru"}`)  ;
       return response
     } catch (error) {
         console.log(error)
@@ -120,14 +120,14 @@ const forecastslice = createSlice({
                     wind_kmph : currentData.wind_kph,
                     humidity : currentData.humidity,
                     vis_km : currentData.vis_km                    ,
-                    aqi : currentData.air_quality,
+                    aqi : currentData.air_quality.pm2_5,
                     sunrise : foreCast[0].astro.sunrise,
                     sunset : foreCast[0].astro.sunset,
                     temp_c : currentData.temp_c,
                     temp_f : currentData.temp_f,
                     condition : currentData.condition.text,
                     is_day : currentData.is_day,
-                    chance_of_rain : foreCast[0].day.condition.text
+                    chance_of_rain : foreCast[0].day.daily_chance_of_rain
                    }
 
 
