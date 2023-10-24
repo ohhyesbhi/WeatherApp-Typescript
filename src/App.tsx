@@ -1,20 +1,18 @@
-import {useEffect} from "react"
+import {useState} from "react"
 import './App.css'
 import Home from './pages/Home'
-import { fetchData } from "./redux/slices/ForecastSlice"
-import { useAppDispatch } from "./hooks/hooks"
-
+// import {contextTempData} from "./contextApi/ContextAPI.js";
+import { contextTempData } from "./contextApi/ContextAPI"
 
 function App() {
-  const dispatch = useAppDispatch();
 
- useEffect(()=>{
-   console.log(dispatch(fetchData()))
- },[])
+const [degcelcius,setDegcelcius] = useState<boolean>(true)
   
  return (
     <>
+    <contextTempData.Provider value={{degcelcius,setDegcelcius}}>
     <Home/>
+    </contextTempData.Provider>
     </>
   )
 }

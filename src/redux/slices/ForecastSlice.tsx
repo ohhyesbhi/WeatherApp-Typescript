@@ -5,7 +5,7 @@ export interface DayForecast{
    date : string,
    avgtemp_c : number,
    avgtemp_f : number,
-   conditional : string
+   condition : string
  }
 
  export interface DayForecast1{
@@ -16,6 +16,7 @@ export interface DayForecast{
     condition : {
         text : string
     }
+   
     }
   }
 
@@ -30,9 +31,29 @@ export interface DayForecast{
     temp_c : number,
     temp_f : string,
     condition : string,
-    is_day : boolean,
+    is_day : number,
     chance_of_rain : number
 
+ }
+
+ interface HourForecast{
+    time:string,
+    temp_c:number,
+    temp_f:number,
+    chance_of_rain:number,
+    condition : string
+    is_day : number
+ }
+
+ interface HourForecast1{
+   time:string,
+   chance_of_rain:number,
+   temp_c:string,
+   temp_f:string,
+   condition : {
+              text : string
+       }
+    is_day : number   
  }
 
 export interface ForecastData{
@@ -42,6 +63,7 @@ export interface ForecastData{
     region:string,
     name:string
    }
+   hourforeCast:HourForecast[]
    dayforecast:DayForecast[],
    currentData : currentDayForecast
 }
@@ -61,6 +83,7 @@ const initialState:ForecastDataState = {
             localtime:''
         },
         dayforecast:[],
+        hourforeCast:[],
         currentData:{
             uv : 0,
             wind_kmph : 0,
@@ -72,7 +95,7 @@ const initialState:ForecastDataState = {
             temp_c : 0,
             temp_f : '',
             condition : '',
-            is_day : false,
+            is_day : 1,
             chance_of_rain : 0
         }
     },
@@ -81,10 +104,11 @@ const initialState:ForecastDataState = {
 
 export const fetchData  = createAsyncThunk('data/fetchdata',async(data:string)=>{
     try {
-      const response = await axiosInstance.get(`forecast.json?key=${import.meta.env.VITE_API_KEY}&days=7&aqi=yes&q=${data?data:"bengaluru"}`)  ;
+      const response = await axiosInstance.get(`forecast.json?key=${import.meta.env.VITE_API_KEY}&days=7&aqi=yes&q=${data?data:"bengaluru"}`);
+      console.log(response)
       return response
     } catch (error) {
-        console.log(error)
+        alert("The term is serached don't exist in our date base")
     }
 })
 
@@ -95,7 +119,6 @@ const forecastslice = createSlice({
     extraReducers : (builder)=>{ 
         builder.addCase(fetchData.fulfilled,(state,action)=>{
                    if(action.payload == undefined) return;
-                   console.log(action.payload.data,"current")
                  
                    const {location} = action.payload.data;
                    const foreCast = action.payload.data.forecast.forecastday;
@@ -112,6 +135,16 @@ const forecastslice = createSlice({
                         avgtemp_c : data.day.avgtemp_c,
                         avgtemp_f : data.day.avgtemp_f,
                         condition : data.day.condition.text
+                    }
+                   })
+                   state.data.hourforeCast = foreCast[0].hour.map((data:HourForecast1)=>{
+                    return{
+                     time:data.time,
+                     chance_of_rain:data.chance_of_rain,
+                     temp_c:data.temp_c,
+                     temp_f:data.temp_f,
+                     condition : data.condition.text,
+                     is_day : data. is_day 
                     }
                    })
 
@@ -135,11 +168,9 @@ const forecastslice = createSlice({
         })
         .addCase(fetchData.pending,(state,action)=>{
             state.status = "loading"
-            console.log(action)
         })
         .addCase(fetchData.rejected,(state,action)=>{
             state.status = "failure"
-            console.log(action)
         })
     }
 })
