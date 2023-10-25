@@ -30,19 +30,8 @@ function Upperhalf() {
   const dayName = daysOfWeek[dayOfWeek];
   const time:string[] = currentData.location.localtime.split(" ");
   // time.shift()
-  console.log(time,"time")
+
   
-
-//  const hour = time[1].split(":");
-//    const value = +hour[0]
-//    let meridiem:string = ""
-
-//    if (value < 12) {
-//      meridiem = 'AM';
-//    } else {
-//      meridiem = 'PM';
-//    }
-
    const condition = currentData.currentData.condition
    let image : string = ""
 
@@ -110,12 +99,12 @@ function Upperhalf() {
 
 
   function handleOnClick(){
-          dispatch(fetchData(text))
+    dispatch(fetchData(text))  
   }
 
   return (
     <div className="h-[70%] w-full p-4">
-     <div className="flex felx-row justify-center ">
+        <div className="flex felx-row justify-center ">
         {/* search bar div */}
         <input
         placeholder="Search..."

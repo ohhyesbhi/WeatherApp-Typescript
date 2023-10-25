@@ -1,12 +1,12 @@
 import Maindata from "../components/Maindata/Maindata"
 import Sidebar from "../components/Sidebar/Sidebar"
-import NightImage from "../assets/NightImage.jpg"
 import { useEffect, useState } from "react"
 import { fetchData } from "../redux/slices/ForecastSlice"
 import { useAppDispatch } from "../hooks/hooks"
 import axios from "axios"
 import { useSelector } from "react-redux"
 import { ReduxState } from "../ReduxState"
+import {memo} from 'react'
 
 import Clearday from "../assets/clearDay.jpg"
 import Rainyday from "../assets/rain.jpg"
@@ -14,14 +14,14 @@ import Cloudyday from "../assets/partlyCloudy.jpg"
 import Cloudynight from "../assets/NightImage.jpg"
 import Clearnight from "../assets/clearNight.jpg"
 import Snow from "../assets/snow.jpg"
-import Fog from "../assets/fog.jpg"
+import Fog from "../assets/fog1.jpg"
+import toast from "react-hot-toast"
 
 
 function Home(){
 
     const dispatch = useAppDispatch()
     const [city,setCity] = useState<string>("")
-
     const data = useSelector((state:ReduxState)=>state.forecast.data);
     const condition:string = data.currentData.condition;
     const is_day:number = data.currentData.is_day;
@@ -96,8 +96,16 @@ function Home(){
     useEffect(()=>{
         navigator.geolocation.getCurrentPosition(async(position)=>{
             const response = await axios.get(`https://us1.locationiq.com/v1/reverse?key=${import.meta.env.VITE_LOC_API_KEY}&lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json`)
+            // toast.promise(response,{
+            //     loading: 'Loading',
+            //     success: 'Got the data',
+            //     error: 'Error when fetching',
+            // })
+            
             if(response?.data?.address?.city != undefined){
+              
             setCity(response?.data?.address?.city)
+            toast.success("Added current location weather condition")
             }
             else if(response?.data?.address?.town != undefined){
                 setCity(response?.data?.address?.town)
@@ -105,14 +113,15 @@ function Home(){
         });
         if(!city){
             dispatch(fetchData("bangalore"))
-        }
+        }else{
            dispatch(fetchData(city))
-    },[city])
+        }
+    },[])
 
     return (
 
         <>
-        <div className="min-h-[100vh] flex flex-row justify-center items-stretch px-8 py-8 " style={{backgroundImage:`linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)) ,url(${image})`}}>
+        <div className="min-h-[100vh] flex flex-row justify-center items-stretch px-8 py-8 " style={{backgroundImage:`linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)) ,url(${image})`}}>
                  <Sidebar/>
                  <Maindata/>
         </div>
@@ -121,4 +130,4 @@ function Home(){
     )
 }
 
-export default Home
+export default memo(Home)

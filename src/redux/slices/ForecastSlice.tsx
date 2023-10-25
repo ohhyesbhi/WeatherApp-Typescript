@@ -1,5 +1,6 @@
 import { createSlice ,createAsyncThunk } from '@reduxjs/toolkit'
 import axiosInstance from "../../config/Axiosinstance"
+import toast from "react-hot-toast"
 
 export interface DayForecast{
    date : string,
@@ -103,12 +104,16 @@ const initialState:ForecastDataState = {
 
 
 export const fetchData  = createAsyncThunk('data/fetchdata',async(data:string)=>{
+    const toastId = toast.loading("Loading...")
     try {
       const response = await axiosInstance.get(`forecast.json?key=${import.meta.env.VITE_API_KEY}&days=7&aqi=yes&q=${data?data:"bengaluru"}`);
-      console.log(response)
+      toast.remove(toastId)
+      toast.success("Done")
       return response
     } catch (error) {
-        alert("The term is serached don't exist in our date base")
+        // alert("The term is serached don't exist in our date base")
+        toast.remove(toastId)
+        toast.error("The term you searched for, don't exist in our date base")
     }
 })
 

@@ -29,7 +29,7 @@ function WeekRow({value,value1}:{value:boolean,value1:boolean}) {
     {
       (value == true)?
       dateArr.map((items)=>{
-        console.log(items)
+       
            const weekDates = items.date
            const dateObject = new Date(weekDates);
            const daysOfWeek:string[] = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
