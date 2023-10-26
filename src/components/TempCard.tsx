@@ -1,4 +1,4 @@
-import React from 'react'
+
 
 function TempCard({temperature , image , title} : {temperature:string|number , image:string, title:string }) {
   return (

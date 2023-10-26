@@ -1,4 +1,4 @@
-import React from 'react'
+
 
 function HighlightCard({footer,data,title}:{footer:string|number,data:string,title:string}   ) {
 

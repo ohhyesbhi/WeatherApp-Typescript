@@ -15,6 +15,7 @@ function WeekRow({value,value1}:{value:boolean,value1:boolean}) {
   const currentData = useSelector((state:ReduxState)=>state);
 
   const dateArr = currentData.forecast.data.dayforecast;
+  console.log(dateArr,"date")
   const hourArr = currentData.forecast.data.hourforeCast;
 
   // useEffect(()=>{
@@ -29,7 +30,6 @@ function WeekRow({value,value1}:{value:boolean,value1:boolean}) {
     {
       (value == true)?
       dateArr.map((items)=>{
-       
            const weekDates = items.date
            const dateObject = new Date(weekDates);
            const daysOfWeek:string[] = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];

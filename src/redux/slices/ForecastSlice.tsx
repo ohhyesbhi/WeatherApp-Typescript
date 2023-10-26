@@ -107,6 +107,7 @@ export const fetchData  = createAsyncThunk('data/fetchdata',async(data:string)=>
     const toastId = toast.loading("Loading...")
     try {
       const response = await axiosInstance.get(`forecast.json?key=${import.meta.env.VITE_API_KEY}&days=7&aqi=yes&q=${data?data:"bengaluru"}`);
+      console.log(response)
       toast.remove(toastId)
       toast.success("Done")
       return response
@@ -173,9 +174,11 @@ const forecastslice = createSlice({
         })
         .addCase(fetchData.pending,(state,action)=>{
             state.status = "loading"
+            console.log(action)
         })
         .addCase(fetchData.rejected,(state,action)=>{
             state.status = "failure"
+            console.log(action)
         })
     }
 })
